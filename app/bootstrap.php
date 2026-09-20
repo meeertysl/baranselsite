@@ -62,7 +62,7 @@ function seed_database(PDO $pdo): void
         'site_title' => 'Baransel Ulutaş',
         'site_tagline' => 'Yazılar, makaleler ve düşünceler',
         'owner_name' => 'Baransel Ulutaş',
-        'owner_title' => 'Yazar',
+        'owner_title' => 'Psikolojik Danışman',
         'seo_description' => 'Baransel Ulutaş\'ın kişisel web sitesi. Yazılar, makaleler ve düşünceler.',
         'hero_title' => 'Düşünceler, yazılar ve makaleler',
         'hero_text' => 'Bu sitede kaleme aldığım yazıları başlık ve tarih sırasıyla bulabilirsiniz.',
