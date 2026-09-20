@@ -20,7 +20,7 @@ $menu = [
     <meta name="robots" content="noindex">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.snow.min.css">
-    <link rel="stylesheet" href="<?= url('/assets/css/admin.css') ?>">
+    <link rel="stylesheet" href="<?= asset('/assets/css/admin.css') ?>">
 </head>
 <body class="admin">
 <aside class="sidebar">
@@ -59,6 +59,6 @@ $menu = [
 </div>
 <script>window.CSRF = <?= json_encode(csrf_token()) ?>;</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.min.js"></script>
-<script src="<?= url('/assets/js/admin.js') ?>"></script>
+<script src="<?= asset('/assets/js/admin.js') ?>"></script>
 </body>
 </html>

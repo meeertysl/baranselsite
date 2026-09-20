@@ -13,6 +13,14 @@ function url(string $path = ''): string
     return '/' . ltrim($path, '/');
 }
 
+/** Statik dosya yolu; önbelleği atlatmak için dosya değişim zamanını ekler. */
+function asset(string $path): string
+{
+    $file = __DIR__ . '/../public/' . ltrim($path, '/');
+    $v = is_file($file) ? (string) filemtime($file) : '1';
+    return url($path) . '?v=' . $v;
+}
+
 function redirect(string $path): never
 {
     header('Location: ' . url($path));

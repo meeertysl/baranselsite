@@ -29,7 +29,7 @@ $flashes = take_flashes();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= url('/assets/css/style.css') ?>">
+    <link rel="stylesheet" href="<?= asset('/assets/css/style.css') ?>">
 </head>
 <body>
 <div class="bg-shapes" aria-hidden="true">
@@ -92,6 +92,6 @@ $flashes = take_flashes();
         <div class="footer-copy"><?= e(setting('footer_text')) ?></div>
     </div>
 </footer>
-<script src="<?= url('/assets/js/main.js') ?>"></script>
+<script src="<?= asset('/assets/js/main.js') ?>"></script>
 </body>
 </html>
