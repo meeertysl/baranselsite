@@ -1,9 +1,9 @@
 <?php $old = $_SESSION['old'] ?? []; unset($_SESSION['old']); ?>
 <section class="section page">
     <div class="container contact">
-        <div class="contact-info">
+        <div class="contact-info reveal">
             <p class="eyebrow">İletişim</p>
-            <h1>Bana ulaşın</h1>
+            <h1 class="split" data-split>Bana ulaşın</h1>
             <p class="lead">Sorularınız ve görüşleriniz için aşağıdaki formu kullanabilir ya da doğrudan iletişim bilgilerimden ulaşabilirsiniz.</p>
             <dl class="contact-list">
                 <?php if (setting('contact_email')): ?>
@@ -17,7 +17,7 @@
                 <?php endif; ?>
             </dl>
         </div>
-        <form class="contact-form" method="post" action="<?= url('/iletisim') ?>">
+        <form class="contact-form reveal" style="--d:.15s" method="post" action="<?= url('/iletisim') ?>">
             <?= csrf_field() ?>
             <div class="hp"><label>Web sitesi <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
             <label>Ad Soyad <span class="req">*</span>
@@ -32,7 +32,7 @@
             <label>Mesajınız <span class="req">*</span>
                 <textarea name="message" rows="6" required maxlength="5000"><?= e($old['body'] ?? '') ?></textarea>
             </label>
-            <button class="btn btn-primary" type="submit">Gönder</button>
+            <button class="btn btn-primary magnetic" type="submit"><span>Gönder</span></button>
         </form>
     </div>
 </section>

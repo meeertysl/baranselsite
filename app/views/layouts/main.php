@@ -25,12 +25,24 @@ $flashes = take_flashes();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($pageTitle) ?></title>
     <meta name="description" content="<?= e($desc) ?>">
+    <link rel="icon" href="<?= url('/favicon.svg') ?>" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= url('/assets/css/style.css') ?>">
 </head>
 <body>
+<div class="bg-shapes" aria-hidden="true">
+    <canvas id="bg-canvas"></canvas>
+    <svg class="blob blob-1" viewBox="0 0 600 600"><path fill="url(#g1)" d="M420 80c70 40 120 120 110 200s-70 150-150 190-170 40-230-10S60 310 80 230 160 90 240 60s120-20 180 20z"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f5f5b"/><stop offset="1" stop-color="#7fb8b2"/></linearGradient></defs></svg>
+    <svg class="blob blob-2" viewBox="0 0 600 600"><path fill="url(#g2)" d="M480 160c40 80 20 190-40 250s-170 90-250 60S60 360 70 270 150 100 230 70s210 10 250 90z"/><defs><linearGradient id="g2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8743d"/><stop offset="1" stop-color="#f0c9a8"/></linearGradient></defs></svg>
+    <svg class="blob blob-3" viewBox="0 0 600 600"><path fill="url(#g3)" d="M380 60c90 20 170 120 170 220s-60 190-150 230-200 20-260-50S40 280 80 190 200 50 290 40s60 10 90 20z"/><defs><linearGradient id="g3" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#e4efee"/><stop offset="1" stop-color="#1f5f5b"/></linearGradient></defs></svg>
+    <svg class="ring ring-1" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 10"/></svg>
+    <svg class="ring ring-2" viewBox="0 0 200 200"><circle cx="100" cy="100" r="70" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/></svg>
+    <svg class="grid-dots" viewBox="0 0 200 200"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="currentColor"/></pattern></defs><rect width="200" height="200" fill="url(#dots)"/></svg>
+</div>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
 <header class="site-header">
     <div class="container header-inner">
         <a class="brand" href="<?= url('/') ?>">
@@ -62,6 +74,7 @@ $flashes = take_flashes();
 </main>
 
 <footer class="site-footer">
+    <svg class="wave wave-footer" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40c240 40 480-40 720 0s480 40 720 0v40H0z" fill="currentColor"/></svg>
     <div class="container footer-inner">
         <div>
             <div class="footer-name"><?= e(setting('owner_name')) ?></div>

@@ -1,8 +1,8 @@
 <section class="section page">
     <div class="container">
-        <div class="page-head">
+        <div class="page-head reveal">
             <p class="eyebrow">Arşiv</p>
-            <h1>Yazılar</h1>
+            <h1 class="split" data-split>Yazılar</h1>
             <p class="lead">Tarih sırasına göre tüm yazılar. Toplam <?= (int) $pager['total'] ?> yazı.</p>
         </div>
 
@@ -20,7 +20,8 @@
 
         <?php if ($articles): ?>
             <div class="grid">
-                <?php foreach ($articles as $article): ?>
+                <?php foreach ($articles as $i => $article): ?>
+                    <?php $delay = ($i % 3) * 0.12; ?>
                     <?php require __DIR__ . '/partials/article_card.php'; ?>
                 <?php endforeach; ?>
             </div>

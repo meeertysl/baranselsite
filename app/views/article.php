@@ -1,6 +1,6 @@
 <article class="section page article">
     <div class="container narrow">
-        <header class="article-head">
+        <header class="article-head reveal">
             <div class="card-meta">
                 <time datetime="<?= e($article['published_at']) ?>"><?= e(format_date($article['published_at'])) ?></time>
                 <?php if ($article['category_name']): ?>
@@ -20,9 +20,10 @@
             </figure>
         <?php endif; ?>
 
-        <div class="prose">
+        <div class="prose reveal" style="--d:.2s">
             <?= $article['content'] ?>
         </div>
+        <div class="progress-bar" aria-hidden="true"><span data-progress></span></div>
 
         <footer class="article-foot">
             <div class="author">
@@ -42,7 +43,8 @@
         <div class="container related">
             <h2 class="section-title">Diğer yazılar</h2>
             <div class="grid">
-                <?php foreach ($related as $article): ?>
+                <?php foreach ($related as $i => $article): ?>
+                    <?php $delay = $i * 0.12; ?>
                     <?php require __DIR__ . '/partials/article_card.php'; ?>
                 <?php endforeach; ?>
             </div>
