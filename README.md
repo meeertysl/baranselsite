@@ -27,14 +27,22 @@ Tarayıcıda `http://localhost:8000` adresini açın. Yönetim paneli: `http://l
 
 Giriş yaptıktan sonra **Şifre** bölümünden şifreyi mutlaka değiştirin.
 
-## Sunucuya kurulum (Apache / cPanel)
+## Hostinger'a kurulum (Git ile)
 
-1. Tüm dosyaları sunucuya yükleyin.
-2. Alan adının kök dizinini `public/` klasörüne yönlendirin. Bu mümkün değilse `public/` içeriğini `public_html` içine, diğer klasörleri (`app`, `data`, `config.php`) bir üst dizine koyun ve `public/index.php` içindeki `require` yollarını buna göre düzenleyin.
-3. `data/` ve `public/uploads/` klasörlerinin yazılabilir olduğundan emin olun (755 veya 775).
-4. `config.php` içindeki `admin_password` değerini değiştirin ya da panelden şifreyi güncelleyin.
+Repo doğrudan `public_html` içine açılacak şekilde hazırlanmıştır. Kök dizindeki `.htaccess` tüm istekleri `public/` klasörüne yönlendirir; `app/`, `data/` ve `config.php` dışarıdan erişime kapalıdır.
 
-`public/.htaccess` dosyası temiz URL'leri (`/yazi/baslik`) sağlar; `mod_rewrite` açık olmalıdır.
+1. hPanel > Websites > Manage > **Advanced > Git**.
+2. Repository: `https://github.com/meeertysl/baranselsite.git`, Branch: `main`, Directory: boş bırakın (`public_html`). `public_html` içindeki varsayılan dosyaları önce silin.
+3. **Deploy** butonuna basın.
+4. Aynı sayfadaki **Auto Deployment** webhook adresini GitHub reposunun Settings > Webhooks bölümüne ekleyin. Böylece her `git push` sonrası site kendiliğinden güncellenir.
+5. hPanel > Advanced > **PHP Configuration** bölümünden PHP 8.2 veya üstünü seçin.
+6. Siteyi açın, `/admin` adresinden `admin` / `admin123` ile girip **Şifre** bölümünden şifreyi hemen değiştirin.
+
+Veritabanı (`data/site.sqlite`) ve yüklenen görseller (`public/uploads/`) sunucuda oluşur, git ile ezilmez.
+
+## Diğer sunucular (Apache / cPanel)
+
+Alan adının kök dizinini `public/` klasörüne yönlendirebiliyorsanız kök `.htaccess` gereksizdir ama zararı da yoktur. `data/` ve `public/uploads/` yazılabilir olmalıdır.
 
 ## Dizin yapısı
 

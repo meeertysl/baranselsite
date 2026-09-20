@@ -1,0 +1,12 @@
+# Hostinger / cPanel: repo doğrudan public_html içine açıldığında
+# tüm istekleri public/ klasörüne yönlendirir.
+RewriteEngine On
+
+# Uygulama dosyalarına dışarıdan erişimi kapat
+RedirectMatch 404 ^/\.git
+RedirectMatch 404 ^/(app|data|\.claude)(/|$)
+RedirectMatch 404 ^/(config\.php|README\.md|\.gitignore)$
+
+# /public/ ile başlamayan her isteği public/ altına taşı
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
