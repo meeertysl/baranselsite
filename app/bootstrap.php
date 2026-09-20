@@ -59,11 +59,11 @@ function seed_database(PDO $pdo): void
         ->execute([config('admin_username'), password_hash(config('admin_password'), PASSWORD_DEFAULT)]);
 
     $defaults = [
-        'site_title' => 'Baran Bey',
+        'site_title' => 'Baransel Ulutaş',
         'site_tagline' => 'Yazılar, makaleler ve düşünceler',
-        'owner_name' => 'Baran Bey',
+        'owner_name' => 'Baransel Ulutaş',
         'owner_title' => 'Yazar',
-        'seo_description' => 'Baran Bey\'in kişisel web sitesi. Yazılar, makaleler ve düşünceler.',
+        'seo_description' => 'Baransel Ulutaş\'ın kişisel web sitesi. Yazılar, makaleler ve düşünceler.',
         'hero_title' => 'Düşünceler, yazılar ve makaleler',
         'hero_text' => 'Bu sitede kaleme aldığım yazıları başlık ve tarih sırasıyla bulabilirsiniz.',
         'hero_image' => '',
