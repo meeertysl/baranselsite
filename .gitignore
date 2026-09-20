@@ -5,3 +5,10 @@
 Thumbs.db
 .idea/
 .vscode/
+
+# Veritabanı ve yüklenen dosyalar sunucuya özeldir
+/data/*.sqlite
+/data/*.sqlite-wal
+/data/*.sqlite-shm
+/public/uploads/*
+!/public/uploads/.gitkeep
