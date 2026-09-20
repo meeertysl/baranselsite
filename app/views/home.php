@@ -1,3 +1,20 @@
+<?php if (setting('hero_banner')): ?>
+<section class="hero hero-banner" data-hero>
+    <div class="banner reveal">
+        <img src="<?= e(setting('hero_banner')) ?>" alt="<?= e(setting('owner_name')) ?>" data-depth="0.012" fetchpriority="high">
+        <div class="banner-actions reveal" style="--d:.4s">
+            <a class="btn btn-primary magnetic" href="<?= url('/yazilar') ?>"><span>Yazıları keşfet</span></a>
+            <a class="btn btn-ghost magnetic banner-ghost" href="<?= url('/hakkimda') ?>"><span>Hakkımda</span></a>
+        </div>
+    </div>
+    <div class="container banner-text">
+        <p class="eyebrow reveal"><?= e(setting('owner_name')) ?><?= setting('owner_title') ? ' · ' . e(setting('owner_title')) : '' ?></p>
+        <h1 class="split" data-split><?= e(setting('hero_title')) ?></h1>
+        <p class="lead reveal" style="--d:.3s"><?= e(setting('hero_text')) ?></p>
+    </div>
+    <svg class="wave wave-hero" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40c240 40 480-40 720 0s480 40 720 0v40H0z" fill="currentColor"/></svg>
+</section>
+<?php else: ?>
 <section class="hero" data-hero>
     <div class="hero-deco" aria-hidden="true">
         <svg class="deco deco-wave" viewBox="0 0 400 120" data-depth="0.03"><path d="M0 60c50-40 100-40 150 0s100 40 150 0 70-30 100 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="draw"/></svg>
@@ -29,6 +46,7 @@
     </div>
     <svg class="wave wave-hero" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40c240 40 480-40 720 0s480 40 720 0v40H0z" fill="currentColor"/></svg>
 </section>
+<?php endif; ?>
 
 <section class="section about-strip">
     <div class="container about-strip-inner">

@@ -48,16 +48,38 @@ function db(): PDO
     if ($fresh || (int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn() === 0) {
         seed_database($pdo);
     }
+    seed_settings($pdo); // sonradan eklenen ayar anahtarları mevcut kurulumlara da varsayılanla gelsin
 
     return $pdo;
 }
 
-/** İlk kurulumda yönetici hesabı, örnek kategori ve varsayılan ayarları oluşturur. */
+/** İlk kurulumda yönetici hesabı, örnek kategori ve örnek yazıyı oluşturur. */
 function seed_database(PDO $pdo): void
 {
     $pdo->prepare('INSERT OR IGNORE INTO users (username, password_hash) VALUES (?, ?)')
         ->execute([config('admin_username'), password_hash(config('admin_password'), PASSWORD_DEFAULT)]);
 
+    $pdo->prepare('INSERT OR IGNORE INTO categories (name, slug) VALUES (?, ?)')->execute(['Genel', 'genel']);
+
+    $count = (int) $pdo->query('SELECT COUNT(*) FROM articles')->fetchColumn();
+    if ($count === 0) {
+        $catId = (int) $pdo->query("SELECT id FROM categories WHERE slug = 'genel'")->fetchColumn();
+        $pdo->prepare('INSERT INTO articles (title, slug, excerpt, content, category_id, is_published, published_at)
+                       VALUES (?, ?, ?, ?, ?, 1, ?)')
+            ->execute([
+                'Siteye hoş geldiniz',
+                'siteye-hos-geldiniz',
+                'Bu, sitenin ilk örnek yazısıdır. Yönetim panelinden silebilir veya düzenleyebilirsiniz.',
+                '<p>Bu, sitenin ilk örnek yazısıdır. Yönetim paneline <strong>/admin</strong> adresinden giriş yaparak yeni yazılar ekleyebilir, bu yazıyı düzenleyebilir veya silebilirsiniz.</p><p>Yazılar başlık, tarih, kategori, özet ve kapak görseli ile yayınlanır.</p>',
+                $catId,
+                date('Y-m-d H:i:s'),
+            ]);
+    }
+}
+
+/** Eksik ayar anahtarlarını varsayılan değerle ekler; mevcut değerlere dokunmaz. */
+function seed_settings(PDO $pdo): void
+{
     $defaults = [
         'site_title' => 'Baransel Ulutaş',
         'site_tagline' => 'Yazılar, makaleler ve düşünceler',
@@ -66,6 +88,7 @@ function seed_database(PDO $pdo): void
         'seo_description' => 'Baransel Ulutaş\'ın kişisel web sitesi. Yazılar, makaleler ve düşünceler.',
         'hero_title' => 'Düşünceler, yazılar ve makaleler',
         'hero_text' => 'Bu sitede kaleme aldığım yazıları başlık ve tarih sırasıyla bulabilirsiniz.',
+        'hero_banner' => '/assets/img/hero-banner.jpg',
         'hero_image' => '',
         'about_short' => 'Hakkımda kısa bir tanıtım metni. Bu alanı yönetim panelinden değiştirebilirsiniz.',
         'about_long' => '<p>Hakkımda sayfasının uzun metni. Yönetim panelindeki Ayarlar bölümünden bu içeriği düzenleyebilirsiniz.</p>',
@@ -83,22 +106,5 @@ function seed_database(PDO $pdo): void
     $stmt = $pdo->prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)');
     foreach ($defaults as $key => $value) {
         $stmt->execute([$key, $value]);
-    }
-
-    $pdo->prepare('INSERT OR IGNORE INTO categories (name, slug) VALUES (?, ?)')->execute(['Genel', 'genel']);
-
-    $count = (int) $pdo->query('SELECT COUNT(*) FROM articles')->fetchColumn();
-    if ($count === 0) {
-        $catId = (int) $pdo->query("SELECT id FROM categories WHERE slug = 'genel'")->fetchColumn();
-        $pdo->prepare('INSERT INTO articles (title, slug, excerpt, content, category_id, is_published, published_at)
-                       VALUES (?, ?, ?, ?, ?, 1, ?)')
-            ->execute([
-                'Siteye hoş geldiniz',
-                'siteye-hos-geldiniz',
-                'Bu, sitenin ilk örnek yazısıdır. Yönetim panelinden silebilir veya düzenleyebilirsiniz.',
-                '<p>Bu, sitenin ilk örnek yazısıdır. Yönetim paneline <strong>/admin</strong> adresinden giriş yaparak yeni yazılar ekleyebilir, bu yazıyı düzenleyebilir veya silebilirsiniz.</p><p>Yazılar başlık, tarih, kategori, özet ve kapak görseli ile yayınlanır.</p>',
-                $catId,
-                date('Y-m-d H:i:s'),
-            ]);
     }
 }

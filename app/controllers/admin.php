@@ -232,7 +232,8 @@ function settings_fields(): array
         'Ana sayfa' => [
             'hero_title' => ['Karşılama başlığı', 'text'],
             'hero_text' => ['Karşılama metni', 'textarea'],
-            'hero_image' => ['Karşılama görseli', 'image'],
+            'hero_banner' => ['Tam genişlik afiş görseli (yatay, ör. 1536×1024). Varsa karşılama alanı bu afişle gösterilir', 'image'],
+            'hero_image' => ['Karşılama görseli (afiş yoksa kullanılan dikey fotoğraf)', 'image'],
         ],
         'Hakkımda' => [
             'about_short' => ['Kısa tanıtım (ana sayfada görünür)', 'textarea'],
