@@ -27,7 +27,20 @@ Tarayıcıda `http://localhost:8000` adresini açın. Yönetim paneli: `http://l
 
 Giriş yaptıktan sonra **Şifre** bölümünden şifreyi mutlaka değiştirin.
 
-## Hostinger'a kurulum (Git ile)
+## Hostinger'a otomatik yayın (GitHub Actions + FTP)
+
+`.github/workflows/deploy.yml` her `main` push'unda dosyaları FTP ile `public_html` içine gönderir. Veritabanı ve yüklenen görseller ellenmez.
+
+Kurulum (bir kez):
+
+1. hPanel > Dosyalar > **FTP Hesapları**: sunucu adresi, kullanıcı adı ve şifreyi not al (yeni hesap oluşturabilirsin).
+2. GitHub > repo > Settings > Secrets and variables > Actions > **New repository secret** ile üç gizli değer ekle:
+   - `FTP_SERVER` (ör. `ftp.pskdanbaranselulutas.com` ya da hPanel'deki IP)
+   - `FTP_USERNAME`
+   - `FTP_PASSWORD`
+3. GitHub > Actions sekmesinde "Hostinger'a yayınla" iş akışını **Run workflow** ile çalıştır ya da bir push yap.
+
+## Hostinger'a kurulum (hPanel Git ile, alternatif)
 
 Repo doğrudan `public_html` içine açılacak şekilde hazırlanmıştır. Kök dizindeki `.htaccess` tüm istekleri `public/` klasörüne yönlendirir; `app/`, `data/` ve `config.php` dışarıdan erişime kapalıdır.
 
