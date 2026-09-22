@@ -21,6 +21,8 @@
                 <span class="dot"></span>
                 <a class="card-cat" href="<?= url('/yazilar?kategori=' . $article['category_slug']) ?>"><?= e($article['category_name']) ?></a>
             <?php endif; ?>
+            <span class="dot"></span>
+            <?= views_badge((int) ($article['view_count'] ?? 0)) ?>
         </div>
         <h3 class="card-title"><a href="<?= url('/yazi/' . $article['slug']) ?>"><?= e($article['title']) ?></a></h3>
         <p class="card-excerpt"><?= e($article['excerpt'] ?: excerpt_of($article['content'])) ?></p>

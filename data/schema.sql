@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS articles (
     cover_image TEXT NOT NULL DEFAULT '',
     category_id INTEGER NULL REFERENCES categories(id) ON DELETE SET NULL,
     is_published INTEGER NOT NULL DEFAULT 1,
+    view_count INTEGER NOT NULL DEFAULT 0,
     published_at TEXT NOT NULL,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))

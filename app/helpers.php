@@ -144,6 +144,20 @@ function reading_time(string $html): int
     return max(1, (int) ceil($words / 200));
 }
 
+/** Okunma sayısını binlik ayraçla yazar: 1.248 */
+function format_count(int $n): string
+{
+    return number_format($n, 0, ',', '.');
+}
+
+/** Okunma sayısını göz simgesiyle birlikte gösteren küçük parça. */
+function views_badge(int $n): string
+{
+    return '<span class="views" title="' . format_count($n) . ' görüntülenme">'
+        . '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 12S5 5.5 12 5.5 22.5 12 22.5 12 19 18.5 12 18.5 1.5 12 1.5 12Z"/><circle cx="12" cy="12" r="3.2"/></svg>'
+        . format_count($n) . '</span>';
+}
+
 /** Metni belirli uzunlukta kısaltır. */
 function excerpt_of(string $html, int $length = 160): string
 {

@@ -9,7 +9,7 @@
 
     <?php if ($articles): ?>
         <table class="table">
-            <thead><tr><th>Başlık</th><th>Kategori</th><th>Durum</th><th>Tarih</th><th></th></tr></thead>
+            <thead><tr><th>Başlık</th><th>Kategori</th><th>Durum</th><th>Tarih</th><th class="right">Okunma</th><th></th></tr></thead>
             <tbody>
             <?php foreach ($articles as $a): ?>
                 <tr>
@@ -20,6 +20,7 @@
                     <td><?= e($a['category_name'] ?? '—') ?></td>
                     <td><?= $a['is_published'] ? '<span class="tag tag-ok">Yayında</span>' : '<span class="tag">Taslak</span>' ?></td>
                     <td><?= e(format_date($a['published_at'])) ?></td>
+                    <td class="right"><?= format_count((int) $a['view_count']) ?></td>
                     <td class="right actions">
                         <?php if ($a['is_published']): ?>
                             <a class="btn btn-ghost btn-sm" href="<?= url('/yazi/' . $a['slug']) ?>" target="_blank">Gör</a>

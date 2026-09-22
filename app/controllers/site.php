@@ -79,6 +79,8 @@ function site_article(string $slug): void
         abort(404, 'Yazı bulunamadı');
     }
 
+    $article['view_count'] = (int) $article['view_count'] + count_article_view((int) $article['id']);
+
     $stmt = db()->prepare('SELECT a.*, c.name AS category_name FROM articles a
                            LEFT JOIN categories c ON c.id = a.category_id
                            WHERE a.is_published = 1 AND a.id != ? ORDER BY a.published_at DESC LIMIT 3');
@@ -90,6 +92,26 @@ function site_article(string $slug): void
         'article' => $article,
         'related' => $stmt->fetchAll(),
     ]);
+}
+
+/**
+ * Yazının okunma sayısını artırır. Aynı ziyaretçi aynı yazıyı oturum boyunca
+ * bir kez sayılır; yönetici kendi ziyaretlerini şişirmesin diye hiç sayılmaz.
+ * Sayaç artırıldıysa 1, artırılmadıysa 0 döner.
+ */
+function count_article_view(int $articleId): int
+{
+    if (is_admin()) {
+        return 0;
+    }
+    $seen = $_SESSION['seen_articles'] ?? [];
+    if (in_array($articleId, $seen, true)) {
+        return 0;
+    }
+    $seen[] = $articleId;
+    $_SESSION['seen_articles'] = array_slice($seen, -200); // oturum çerezi sınırsız büyümesin
+    db()->prepare('UPDATE articles SET view_count = view_count + 1 WHERE id = ?')->execute([$articleId]);
+    return 1;
 }
 
 function site_contact(): void

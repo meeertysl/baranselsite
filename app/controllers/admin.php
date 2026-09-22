@@ -64,6 +64,7 @@ function admin_dashboard(): void
             'published' => (int) $db->query('SELECT COUNT(*) FROM articles WHERE is_published = 1')->fetchColumn(),
             'categories' => (int) $db->query('SELECT COUNT(*) FROM categories')->fetchColumn(),
             'messages' => (int) $db->query('SELECT COUNT(*) FROM messages WHERE is_read = 0')->fetchColumn(),
+            'views' => (int) $db->query('SELECT COALESCE(SUM(view_count), 0) FROM articles')->fetchColumn(),
         ],
         'recent' => $db->query('SELECT a.*, c.name AS category_name FROM articles a
                                 LEFT JOIN categories c ON c.id = a.category_id

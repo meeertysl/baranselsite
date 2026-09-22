@@ -206,6 +206,8 @@ html.has-cursor body { cursor: none; }
 .card-meta { display: flex; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); flex-wrap: wrap; }
 .card-cat { color: var(--warm); font-weight: 600; }
 .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--muted); display: inline-block; }
+.views { display: inline-flex; align-items: center; gap: .3rem; color: var(--muted); }
+.views svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .card-title { margin: 0; font-size: 1.25rem; }
 .card-title a { color: var(--ink); background-image: linear-gradient(var(--accent), var(--accent)); background-size: 0 2px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .5s var(--ease), color .3s; }
 .card:hover .card-title a { background-size: 100% 2px; color: var(--accent); }

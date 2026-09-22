@@ -7,6 +7,10 @@
         <span class="stat-n"><?= $stats['published'] ?></span>
         <span class="stat-l">Yayında</span>
     </div>
+    <a class="stat" href="<?= url('/admin/yazilar') ?>">
+        <span class="stat-n"><?= format_count($stats['views']) ?></span>
+        <span class="stat-l">Toplam okunma</span>
+    </a>
     <a class="stat" href="<?= url('/admin/kategoriler') ?>">
         <span class="stat-n"><?= $stats['categories'] ?></span>
         <span class="stat-l">Kategori</span>
@@ -24,7 +28,7 @@
     </div>
     <?php if ($recent): ?>
         <table class="table">
-            <thead><tr><th>Başlık</th><th>Kategori</th><th>Durum</th><th>Tarih</th><th></th></tr></thead>
+            <thead><tr><th>Başlık</th><th>Kategori</th><th>Durum</th><th>Tarih</th><th class="right">Okunma</th><th></th></tr></thead>
             <tbody>
             <?php foreach ($recent as $a): ?>
                 <tr>
@@ -32,6 +36,7 @@
                     <td><?= e($a['category_name'] ?? '—') ?></td>
                     <td><?= $a['is_published'] ? '<span class="tag tag-ok">Yayında</span>' : '<span class="tag">Taslak</span>' ?></td>
                     <td><?= e(format_date($a['published_at'])) ?></td>
+                    <td class="right"><?= format_count((int) $a['view_count']) ?></td>
                     <td class="right"><a class="btn btn-ghost btn-sm" href="<?= url('/admin/yazilar/' . $a['id']) ?>">Düzenle</a></td>
                 </tr>
             <?php endforeach; ?>

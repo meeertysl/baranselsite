@@ -9,6 +9,8 @@
                 <?php endif; ?>
                 <span class="dot"></span>
                 <span><?= reading_time($article['content']) ?> dk okuma</span>
+                <span class="dot"></span>
+                <?= views_badge((int) $article['view_count']) ?>
             </div>
             <h1><?= e($article['title']) ?></h1>
             <?php if ($article['excerpt']): ?><p class="lead"><?= e($article['excerpt']) ?></p><?php endif; ?>

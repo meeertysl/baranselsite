@@ -44,6 +44,7 @@ function db(): PDO
     $pdo->exec('PRAGMA journal_mode = WAL');
 
     $pdo->exec(file_get_contents(__DIR__ . '/../data/schema.sql'));
+    migrate_database($pdo); // şemaya sonradan eklenen sütunlar mevcut veritabanlarına da gelsin
 
     if ($fresh || (int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn() === 0) {
         seed_database($pdo);
@@ -51,6 +52,18 @@ function db(): PDO
     seed_settings($pdo); // sonradan eklenen ayar anahtarları mevcut kurulumlara da varsayılanla gelsin
 
     return $pdo;
+}
+
+/** Mevcut veritabanlarında eksik olan sütunları ekler. CREATE TABLE IF NOT EXISTS bunu yapmaz. */
+function migrate_database(PDO $pdo): void
+{
+    $columns = [];
+    foreach ($pdo->query('PRAGMA table_info(articles)') as $row) {
+        $columns[] = $row['name'];
+    }
+    if (!in_array('view_count', $columns, true)) {
+        $pdo->exec('ALTER TABLE articles ADD COLUMN view_count INTEGER NOT NULL DEFAULT 0');
+    }
 }
 
 /** İlk kurulumda yönetici hesabı, örnek kategori ve örnek yazıyı oluşturur. */
