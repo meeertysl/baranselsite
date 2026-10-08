@@ -13,6 +13,17 @@ function url(string $path = ''): string
     return '/' . ltrim($path, '/');
 }
 
+/** Mutlak adres (canonical, paylaşım etiketleri, sitemap için). */
+function abs_url(string $path = ''): string
+{
+    if (preg_match('#^https?://#i', $path)) {
+        return $path;
+    }
+    $host = preg_replace('/[^a-z0-9.\-:]/i', '', (string) ($_SERVER['HTTP_HOST'] ?? 'localhost'));
+    $local = $host === 'localhost' || str_starts_with($host, 'localhost:') || str_starts_with($host, '127.');
+    return ($local ? 'http' : 'https') . '://' . $host . url($path);
+}
+
 /** Statik dosya yolu; önbelleği atlatmak için dosya değişim zamanını ekler. */
 function asset(string $path): string
 {

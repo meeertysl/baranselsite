@@ -25,6 +25,28 @@ $flashes = take_flashes();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($pageTitle) ?></title>
     <meta name="description" content="<?= e($desc) ?>">
+    <link rel="canonical" href="<?= e(abs_url($canonicalPath ?? $path)) ?>">
+    <meta name="robots" content="<?= !empty($noindex) ? 'noindex, follow' : 'index, follow, max-image-preview:large' ?>">
+    <meta name="author" content="<?= e(setting('owner_name')) ?>">
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:site_name" content="<?= e($siteTitle) ?>">
+    <meta property="og:type" content="<?= e($ogType ?? 'website') ?>">
+    <meta property="og:title" content="<?= e($title ?? $siteTitle) ?>">
+    <meta property="og:description" content="<?= e($desc) ?>">
+    <meta property="og:url" content="<?= e(abs_url($canonicalPath ?? $path)) ?>">
+<?php $ogImg = $ogImage ?? (setting('hero_banner') ?: setting('about_photo')); ?>
+<?php if ($ogImg): ?>
+    <meta property="og:image" content="<?= e(abs_url($ogImg)) ?>">
+<?php endif; ?>
+    <meta name="twitter:card" content="<?= $ogImg ? 'summary_large_image' : 'summary' ?>">
+    <meta name="twitter:title" content="<?= e($title ?? $siteTitle) ?>">
+    <meta name="twitter:description" content="<?= e($desc) ?>">
+<?php if ($ogImg): ?>
+    <meta name="twitter:image" content="<?= e(abs_url($ogImg)) ?>">
+<?php endif; ?>
+<?php foreach (($jsonLd ?? []) as $ld): ?>
+    <script type="application/ld+json"><?= json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) ?></script>
+<?php endforeach; ?>
     <link rel="icon" href="<?= url('/favicon.svg') ?>" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

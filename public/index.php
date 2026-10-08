@@ -22,6 +22,8 @@ $routes = [
     ['GET',  '#^/hakkimda$#',                 'site_about'],
     ['GET',  '#^/yazilar$#',                  'site_articles'],
     ['GET',  '#^/yazi/([a-z0-9\-]+)$#',       'site_article'],
+    ['GET',  '#^/sitemap\.xml$#',            'site_sitemap'],
+    ['GET',  '#^/robots\.txt$#',             'site_robots'],
     ['GET',  '#^/iletisim$#',                 'site_contact'],
     ['POST', '#^/iletisim$#',                 'site_contact_send'],
 

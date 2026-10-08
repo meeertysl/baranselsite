@@ -30,6 +30,14 @@ function site_home(): void
     $total = (int) db()->query('SELECT COUNT(*) FROM articles WHERE is_published = 1')->fetchColumn();
     view('home', [
         'title' => setting('site_title'),
+        'jsonLd' => [[
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => setting('site_title'),
+            'url' => abs_url('/'),
+            'inLanguage' => 'tr-TR',
+            'author' => ['@type' => 'Person', 'name' => setting('owner_name'), 'jobTitle' => setting('owner_title')],
+        ]],
         'articles' => $articles,
         'total' => $total,
     ]);
@@ -86,9 +94,43 @@ function site_article(string $slug): void
                            WHERE a.is_published = 1 AND a.id != ? ORDER BY a.published_at DESC LIMIT 3');
     $stmt->execute([$article['id']]);
 
+    $desc = $article['excerpt'] ?: excerpt_of($article['content']);
+    $canonical = '/yazi/' . $article['slug'];
+    $owner = setting('owner_name');
+    $published = date('c', strtotime((string) $article['published_at']));
+    $modified = date('c', strtotime((string) ($article['updated_at'] ?: $article['published_at'])));
+    $articleLd = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Article',
+        'headline' => $article['title'],
+        'description' => $desc,
+        'datePublished' => $published,
+        'dateModified' => $modified,
+        'inLanguage' => 'tr-TR',
+        'mainEntityOfPage' => abs_url($canonical),
+        'author' => ['@type' => 'Person', 'name' => $owner],
+        'publisher' => ['@type' => 'Person', 'name' => $owner],
+    ];
+    if ($article['cover_image']) {
+        $articleLd['image'] = [abs_url($article['cover_image'])];
+    }
+    $crumbs = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Ana Sayfa', 'item' => abs_url('/')],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Yazılar', 'item' => abs_url('/yazilar')],
+            ['@type' => 'ListItem', 'position' => 3, 'name' => $article['title'], 'item' => abs_url($canonical)],
+        ],
+    ];
+
     view('article', [
         'title' => $article['title'],
-        'description' => $article['excerpt'] ?: excerpt_of($article['content']),
+        'description' => $desc,
+        'canonicalPath' => $canonical,
+        'ogType' => 'article',
+        'ogImage' => $article['cover_image'] ?: null,
+        'jsonLd' => [$articleLd, $crumbs],
         'article' => $article,
         'related' => $stmt->fetchAll(),
     ]);
@@ -142,4 +184,38 @@ function site_contact_send(): void
 
     flash('success', 'Mesajınız iletildi. Teşekkürler.');
     redirect('/iletisim');
+}
+
+/** Arama motorları için XML site haritası. */
+function site_sitemap(): void
+{
+    $rows = db()->query('SELECT slug, published_at, updated_at FROM articles WHERE is_published = 1 ORDER BY published_at DESC')->fetchAll();
+    $urls = [
+        [abs_url('/'), null], [abs_url('/hakkimda'), null],
+        [abs_url('/yazilar'), $rows ? $rows[0]['published_at'] : null], [abs_url('/iletisim'), null],
+    ];
+    foreach ($rows as $r) {
+        $urls[] = [abs_url('/yazi/' . $r['slug']), $r['updated_at'] ?: $r['published_at']];
+    }
+    header('Content-Type: application/xml; charset=UTF-8');
+    echo '<?xml version="1.0" encoding="UTF-8"?>' . "
+" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "
+";
+    foreach ($urls as [$loc, $mod]) {
+        echo '  <url><loc>' . e($loc) . '</loc>' . ($mod ? '<lastmod>' . date('Y-m-d', strtotime((string) $mod)) . '</lastmod>' : '') . "</url>
+";
+    }
+    echo '</urlset>';
+}
+
+/** robots.txt: yönetimi dışarıda bırakır, site haritasını bildirir. */
+function site_robots(): void
+{
+    header('Content-Type: text/plain; charset=UTF-8');
+    echo "User-agent: *
+Disallow: /admin
+Allow: /
+
+Sitemap: " . abs_url('/sitemap.xml') . "
+";
 }
